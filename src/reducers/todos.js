@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux';
+
 const todo = (state, action) => {
     switch (action.type) {
         case 'ADD_TODO':
@@ -17,7 +19,22 @@ const todo = (state, action) => {
     }
 }
 
-const todos = (states = [], action) => {
+const byId = (state = {}, action) => {
+    switch (action.type) {
+        case 'ADD_TODO':
+        case 'TOGGLE_TODO':
+            return {
+                ...state,
+                [action.id]: todo(state[action.id], action),
+            };
+        default:
+            return state;
+    }
+};
+
+
+
+/*const todos = (states = [], action) => {
     switch (action.type) {
         case 'ADD_TODO':
             return [...states, todo(undefined, action)];
@@ -28,19 +45,38 @@ const todos = (states = [], action) => {
         default:
             return states;
     }
-}
+}*/
 
-export default todos;
-
-export const FilterByVisibility = (state, filter) => {
-    switch (filter) {
-        case 'all':
-            return state;
-        case 'active':
-            return state.filter(todo => !todo.completed)
-        case 'completed':
-            return state.filter(todo => todo.completed)
+const allIds = (state = [], action) => {
+    switch (action.type) {
+        case 'ADD_TODO':
+            return [...state, action.id];
         default:
             return state;
     }
+};
+
+const todos = combineReducers({
+    byId,
+    allIds
+})
+
+const getAllTodos = (state) => {
+    return state.allIds.map(id => state.byId[id]);
 }
+
+export const FilterByVisibility = (state, filter) => {
+    const allTodos = getAllTodos(state);
+    switch (filter) {
+        case 'all':
+            return allTodos;
+        case 'active':
+            return allTodos.filter(todo => !todo.completed)
+        case 'completed':
+            return allTodos.filter(todo => todo.completed)
+        default:
+            return allTodos;
+    }
+}
+
+export default todos;
