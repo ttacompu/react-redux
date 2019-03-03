@@ -1,48 +1,33 @@
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import React from 'react';
-import {toggleTodoAction} from '../actions';
+import { toggleTodoAction } from '../actions';
 import TodoItem from './TodoItem';
+import {FilterByVisibility} from '../reducers'
 
 
-const FilterByVisibility = (data, filter)=>{
-    switch(filter){
-        case 'SHOW_ALL':
-            return data;
-        case 'SHOW_ACTIVE':
-            return data.filter(todo => !todo.completed )
-       case 'SHOW_COMPLETED':
-            return data.filter(todo => todo.completed )
-        default:
-            return data;
-    }
-}
-
-const TodoList = ({todos, visibilityFilter, onTodoClick}) =>{
-    const dataResult = FilterByVisibility(todos, visibilityFilter);
+const TodoList = ({ todos, onTodoClick }) => {
     return (
-     <div>   
-        <ul>
-            {
-                dataResult.map((todo)=> <TodoItem key={todo.id} completed={todo.completed} text={todo.text}
-                 onClick={ () =>
-                  onTodoClick(todo.id) 
-                } /> )
-            }       
-        </ul>
-    </div>
+        <div>
+            <ul>
+                {
+                    todos.map((todo) => <TodoItem key={todo.id} completed={todo.completed} text={todo.text}
+                        onClick={() =>
+                            onTodoClick(todo.id)
+                        } />)
+                }
+            </ul>
+        </div>
     )
 }
 
-const mapStateTodoListToProps = (state) =>({
-    todos : FilterByVisibility(state.todos, state.visibilityFilter)
-})
+const mapStateTodoListToProps = (state, { match }) => {
+    const filter = (match.params && match.params.filter) ? match.params.filter : 'all';
+    return { todos: FilterByVisibility(state, filter) }
+}
 
-const mapDispatchTodoListToProps = (dispatch) =>({
-    onTodoClick(id){
-        dispatch(toggleTodoAction(id))
-    }
-})
 
-const TodoListContainer=connect(mapStateTodoListToProps, mapDispatchTodoListToProps)(TodoList);
 
-export  default TodoListContainer;
+const TodoListContainer = withRouter(connect(mapStateTodoListToProps, { onTodoClick : toggleTodoAction})(TodoList));
+
+export default TodoListContainer;

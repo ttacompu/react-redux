@@ -28,7 +28,7 @@ const FilterLink = connect(mapStateToLinkPropes, mapDispatchToLinkProps)(Link);
 export default FilterLink; */
 
 const FilterLink = ({filter, children}) =>{
-    return (<NavLink to={filter === 'all' ? '' : filter } activeStyle={{
+    return (<NavLink to={filter === 'all' ? '/' : "/" + filter } exact activeStyle={{
         textDecoration : 'none',
         color : 'black'
     }} > {children}</NavLink>)

@@ -7,7 +7,7 @@ import Pager from './Pager'
 const App = () => (
     <div>
             <AddTodo  />
-            <TodoListContainer  />
+            <TodoListContainer   />
             <Pager   />
     </div>
 )
