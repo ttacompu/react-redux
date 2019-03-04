@@ -1,5 +1,5 @@
 {
-  "name": "react-advance-component",
+  "name": "react-redux-sample",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -24,7 +24,7 @@
     "@babel/preset-env": "^7.0.0-beta.51",
     "@babel/preset-react": "^7.0.0-beta.51",
     "babel-core": "7.0.0-bridge.0",
-    "babel-loader": "^8.0.0-beta.6",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
     "css-loader": "^1.0.0",
     "deep-freeze": "0.0.1",
     "expect": "^23.4.0",
@@ -39,13 +39,14 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "babel-loader": "^8.0.5",
     "babel-polyfill": "^6.26.0",
     "install": "^0.12.2",
     "lodash": "^4.17.11",
-    "node-uuid": "^1.4.8",
     "npm": "^6.8.0",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "uuid": "^3.3.2"
   }
 }
