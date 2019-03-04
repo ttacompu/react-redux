@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import React from 'react';
-import { toggleTodoAction } from '../actions';
+import * as actions from '../actions';
 import TodoItem from './TodoItem';
-import {FilterByVisibility} from '../reducers'
+import { FilterByVisibility } from '../reducers'
+
 
 
 const TodoList = ({ todos, onTodoClick }) => {
@@ -21,13 +22,38 @@ const TodoList = ({ todos, onTodoClick }) => {
     )
 }
 
+class TodoListContainer extends React.Component {
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.filter !== prevProps.filter) {
+            this.fetchData();
+        }
+    }
+
+    fetchData() {
+        const { filter, fetchTodos } = this.props;
+        fetchTodos(filter);
+    }
+
+    render() {
+        const { toggleTodo, ...rest } = this.props;
+        return <TodoList
+            {...rest}
+            onTodoClick={toggleTodo}
+        />
+    }
+}
+
 const mapStateTodoListToProps = (state, { match }) => {
     const filter = (match.params && match.params.filter) ? match.params.filter : 'all';
-    return { todos: FilterByVisibility(state, filter) }
+    return { todos: FilterByVisibility(state, filter), filter }
 }
 
 
 
-const TodoListContainer = withRouter(connect(mapStateTodoListToProps, { onTodoClick : toggleTodoAction})(TodoList));
+TodoListContainer = withRouter(connect(mapStateTodoListToProps, actions)(TodoListContainer));
 
 export default TodoListContainer;

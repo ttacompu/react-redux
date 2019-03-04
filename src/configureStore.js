@@ -1,6 +1,5 @@
 import { createStore } from 'redux';
 import todoApp from './reducers';
-import {fetchTodos} from './api';
 
 
 const addLoggingToDispatch = (store) =>{
@@ -19,15 +18,25 @@ const addLoggingToDispatch = (store) =>{
     }
 }
 
+const addPromiseSupportToDispatch = (store) =>{
+    const rawDispatch = store.dispatch;
+    return (action) => {
+        if(typeof action.then === 'function'){
+                return action.then(rawDispatch)
+        }
+        return rawDispatch(action)
+    }
+}
+
 const configureStore = () => {
     const store = createStore(todoApp);
     if(process.env.NODE_ENV !== 'production'){
         store.dispatch = addLoggingToDispatch(store);
     }
-    fetchTodos('all').then(console.log);
     /*store.subscribe(throttle(() => {
         saveState({ todos: store.getState().todos });
     }, 1000));*/
+    store.dispatch = addPromiseSupportToDispatch(store);
 
     return store;
 

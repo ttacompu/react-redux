@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import {addTodoAction} from '../actions';
+import {addTodo} from '../actions';
 
 
 let AddTodo = ({dispatch}) =>{
@@ -11,7 +11,7 @@ let AddTodo = ({dispatch}) =>{
              <input  ref={(node)=>{input = node}} />
              <button onClick={()=>{ 
                  if(input.value){
-                    dispatch(addTodoAction(input.value)); 
+                    dispatch(addTodo(input.value)); 
                     input.value=""
                  }
                     }}>Add</button>
