@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import React from 'react';
 import * as actions from '../actions';
 import TodoItem from './TodoItem';
-import { FilterByVisibility } from '../reducers'
+import {  getVisibleTodos } from '../reducers'
 
 
 
@@ -49,7 +49,7 @@ class TodoListContainer extends React.Component {
 
 const mapStateTodoListToProps = (state, { match }) => {
     const filter = (match.params && match.params.filter) ? match.params.filter : 'all';
-    return { todos: FilterByVisibility(state, filter), filter }
+    return { todos: getVisibleTodos(state, filter), filter }
 }
 
 
