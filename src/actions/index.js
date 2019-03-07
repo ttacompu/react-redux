@@ -3,7 +3,7 @@ import * as api from '../api'
 
 export const receiveTodos =(filter, response) =>{
    return{
-       type : 'RECEIVE_TODO',
+       type : 'RECEIVE_TODOS',
        filter,
        response
    }

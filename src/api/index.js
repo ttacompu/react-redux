@@ -9,9 +9,14 @@ const fakeDatabase ={
         },
         {
             id : v4(),
-            text : 'first one',
+            text : 'second one',
             completed : true
-        }
+        },
+        {
+          id : v4(),
+          text : 'third one',
+          completed : true
+      }
     ]
 }
 
