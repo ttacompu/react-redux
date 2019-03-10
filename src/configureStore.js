@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
-import {createLogger} from 'redux-logger'
+import {createLogger} from 'redux-logger';
+import thunk from 'redux-thunk';
 import todoApp from './reducers';
 
 
@@ -35,8 +36,8 @@ import todoApp from './reducers';
         store.dispatch = middleware(store)(store.dispatch);
     })
 }*/
-const thunk = (store) => (next) => (action)=>
-    typeof action === 'function' ? action(store.dispatch, store.getState) : next(action);
+/*const thunk = (store) => (next) => (action)=>
+    typeof action === 'function' ? action(store.dispatch, store.getState) : next(action); */
 
 
 

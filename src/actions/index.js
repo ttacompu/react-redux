@@ -1,35 +1,40 @@
-import {v4} from 'uuid';
+import { v4 } from 'uuid';
 import * as api from '../api'
 import { getIsFetching } from '../reducers'
 
-export const requestTodos = (filter) =>({
-    type : 'REQUEST_TODOS',
-    filter
-})
 
-export const receiveTodos =(filter, response) =>{
-   return{
-       type : 'RECEIVE_TODOS',
-       filter,
-       response
-   }
-}
 
-export const fetchTodos = (filter) => (dispatch, getState) =>{
-    if(getIsFetching(getState(), filter)){
-        return;
+export const fetchTodos = (filter) => (dispatch, getState) => {
+    if (getIsFetching(getState(), filter)) {
+        Promise.resolve();
     }
-    dispatch(requestTodos(filter));
-    
-    return api.fetchTodos(filter).then((response)=>  dispatch(receiveTodos(filter, response)));
+    dispatch({
+        type: 'FETCH_TODOS_REQUEST',
+        filter
+    });
+
+    return api.fetchTodos(filter).then((response) => dispatch({
+        type: 'FETCH_TODOS_SUCCESS',
+        filter,
+        response
+    }),
+        error => {
+            dispatch({
+                type: 'FETCH_TODOS_FAIL',
+                filter,
+                message : error.message || 'something went wrong'
+
+            })
+        }
+    );
 
 }
-    
 
-export const addTodo =(text) =>{
+
+export const addTodo = (text) => {
     return {
-        type : 'ADD_TODO',
-        id : v4(),
+        type: 'ADD_TODO',
+        id: v4(),
         text,
 
     }
@@ -40,8 +45,8 @@ export const addTodo =(text) =>{
     filter
 })*/
 
-export const toggleTodo = (id) =>({
-    type : 'TOGGLE_TODO',
+export const toggleTodo = (id) => ({
+    type: 'TOGGLE_TODO',
     id
 })
 
