@@ -1,4 +1,6 @@
 //import { v4 } from 'uuid';
+import { normalize } from 'normalizr';
+import * as schema from './schema';
 import * as api from '../api'
 import { getIsFetching } from '../reducers'
 
@@ -13,16 +15,20 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
         filter
     });
 
-    return api.fetchTodos(filter).then((response) => dispatch({
-        type: 'FETCH_TODOS_SUCCESS',
-        filter,
-        response
-    }),
+    return api.fetchTodos(filter).then((response) => {
+        console.log('normalize response', normalize(response, schema.arrayOfTodos))
+
+        dispatch({
+            type: 'FETCH_TODOS_SUCCESS',
+            filter,
+            response : normalize(response, schema.arrayOfTodos)
+        })
+    },
         error => {
             dispatch({
                 type: 'FETCH_TODOS_FAIL',
                 filter,
-                message : error.message || 'something went wrong'
+                message: error.message || 'something went wrong'
 
             })
         }
@@ -32,10 +38,12 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
 
 
 export const addTodo = (text) => (dispatch) => {
-    api.addTodo(text).then( (response) =>{
+    api.addTodo(text).then((response) => {
+        console.log('normalize response', normalize(response, schema.todo))
+
         dispatch({
-            type : 'ADD_TODO_SUCCESS',
-            response,
+            type: 'ADD_TODO_SUCCESS',
+            response : normalize(response, schema.todo),
         })
     })
 }

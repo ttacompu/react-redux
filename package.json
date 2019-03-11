@@ -44,6 +44,7 @@
     "babel-polyfill": "^6.26.0",
     "install": "^0.12.2",
     "lodash": "^4.17.11",
+    "normalizr": "^3.3.0",
     "npm": "^6.8.0",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
